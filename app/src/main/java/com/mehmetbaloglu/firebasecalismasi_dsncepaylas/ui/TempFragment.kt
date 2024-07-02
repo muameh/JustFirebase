@@ -1,16 +1,15 @@
 package com.mehmetbaloglu.firebasecalismasi_dsncepaylas.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.mehmetbaloglu.firebasecalismasi_dsncepaylas.R
-import com.mehmetbaloglu.firebasecalismasi_dsncepaylas.databinding.FragmentLoginBinding
 import com.mehmetbaloglu.firebasecalismasi_dsncepaylas.databinding.FragmentTempBinding
 
 
@@ -29,9 +28,7 @@ class TempFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentTempBinding.inflate(inflater, container, false)
         val view = binding.root
@@ -46,11 +43,19 @@ class TempFragment : Fragment() {
 
             val action = TempFragmentDirections.actionTempFragmentToLoginFragment()
             Navigation.findNavController(view).navigate(action)
+
+            Toast.makeText(requireContext(), "You have signed out succesfully", Toast.LENGTH_SHORT)
+                .show()
         }
 
-        var userEmail = auth.currentUser?.email
-        binding.textViewUserEmail.text = userEmail
+        binding.textViewUserEmail.text = auth.currentUser?.email
 
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 
