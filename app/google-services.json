@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "75915553079",
+    "project_id": "dusuncepaylas-d9051",
+    "storage_bucket": "dusuncepaylas-d9051.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:75915553079:android:32eb60c4898223435e52b2",
+        "android_client_info": {
+          "package_name": "com.mehmetbaloglu.firebasecalismasi_dsncepaylas"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwdUZwOKqGxR6ietRxPjBZzBSVQYFpkfY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
