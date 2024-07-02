@@ -28,7 +28,7 @@ class LoginFragment : Fragment() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
-        if (currentUser != null) {
+        if (currentUser != null && currentUser.isEmailVerified) {
             val action = LoginFragmentDirections.actionLoginFragmentToTempFragment()
             view?.let { Navigation.findNavController(it).navigate(action) }
         }
@@ -108,11 +108,14 @@ class LoginFragment : Fragment() {
                         ).show()
                     }
                     //auth.signOut()
+                    /*
                     Toast.makeText(
                         requireContext(),
                         "User created successfully. Please verify your email.",
                         Toast.LENGTH_SHORT
                     ).show()
+                     */
+
                 } else {
                     Toast.makeText(
                         requireContext(), task.exception?.localizedMessage, Toast.LENGTH_SHORT
