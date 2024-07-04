@@ -11,16 +11,28 @@
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
-            android:id="@+id/action_loginFragment_to_tempFragment"
-            app:destination="@id/tempFragment" />
+            android:id="@+id/action_loginFragment_to_feedFragment"
+            app:destination="@id/feedFragment" />
     </fragment>
     <fragment
-        android:id="@+id/tempFragment"
-        android:name="com.mehmetbaloglu.firebasecalismasi_dsncepaylas.ui.TempFragment"
-        android:label="fragment_temp"
-        tools:layout="@layout/fragment_temp" >
+        android:id="@+id/shareFragment"
+        android:name="com.mehmetbaloglu.firebasecalismasi_dsncepaylas.ui.ShareFragment"
+        android:label="fragment_share"
+        tools:layout="@layout/fragment_share" >
         <action
-            android:id="@+id/action_tempFragment_to_loginFragment"
+            android:id="@+id/action_shareFragment_to_feedFragment"
+            app:destination="@id/feedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/feedFragment"
+        android:name="com.mehmetbaloglu.firebasecalismasi_dsncepaylas.ui.FeedFragment"
+        android:label="fragment_feed"
+        tools:layout="@layout/fragment_feed" >
+        <action
+            android:id="@+id/action_feedFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_feedFragment_to_shareFragment"
+            app:destination="@id/shareFragment" />
     </fragment>
 </navigation>

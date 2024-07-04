@@ -29,7 +29,7 @@ class LoginFragment : Fragment() {
         // Check if user is signed in (non-null) and update UI accordingly.
         val currentUser = auth.currentUser
         if (currentUser != null && currentUser.isEmailVerified) {
-            val action = LoginFragmentDirections.actionLoginFragmentToTempFragment()
+            val action = LoginFragmentDirections.actionLoginFragmentToFeedFragment()
             view?.let { Navigation.findNavController(it).navigate(action) }
         }
     }
@@ -67,7 +67,7 @@ class LoginFragment : Fragment() {
                 if (task.isSuccessful) {
                     val user = auth.currentUser
                     if (user != null && user.isEmailVerified) {
-                        val action = LoginFragmentDirections.actionLoginFragmentToTempFragment()
+                        val action = LoginFragmentDirections.actionLoginFragmentToFeedFragment()
                         Navigation.findNavController(view).navigate(action)
                         Toast.makeText(
                             requireContext(), "Logged in successfully", Toast.LENGTH_SHORT
