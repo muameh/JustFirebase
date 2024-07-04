@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.mehmetbaloglu.firebasecalismasi_dsncepaylas.ui.LoginFragment"
+        android:name="com.mehmetbaloglu.firebasecalismasi_dsncepaylas.ui.fragments.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/shareFragment"
-        android:name="com.mehmetbaloglu.firebasecalismasi_dsncepaylas.ui.ShareFragment"
+        android:name="com.mehmetbaloglu.firebasecalismasi_dsncepaylas.ui.fragments.ShareFragment"
         android:label="fragment_share"
         tools:layout="@layout/fragment_share" >
         <action
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/feedFragment"
-        android:name="com.mehmetbaloglu.firebasecalismasi_dsncepaylas.ui.FeedFragment"
+        android:name="com.mehmetbaloglu.firebasecalismasi_dsncepaylas.ui.fragments.FeedFragment"
         android:label="fragment_feed"
         tools:layout="@layout/fragment_feed" >
         <action

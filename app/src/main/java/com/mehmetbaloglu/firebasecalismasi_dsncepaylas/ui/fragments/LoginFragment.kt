@@ -1,4 +1,4 @@
-package com.mehmetbaloglu.firebasecalismasi_dsncepaylas.ui
+package com.mehmetbaloglu.firebasecalismasi_dsncepaylas.ui.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater

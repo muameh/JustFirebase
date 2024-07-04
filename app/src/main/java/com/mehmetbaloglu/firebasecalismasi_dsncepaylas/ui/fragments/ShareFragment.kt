@@ -1,18 +1,18 @@
-package com.mehmetbaloglu.firebasecalismasi_dsncepaylas.ui
+package com.mehmetbaloglu.firebasecalismasi_dsncepaylas.ui.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.mehmetbaloglu.firebasecalismasi_dsncepaylas.R
-import com.mehmetbaloglu.firebasecalismasi_dsncepaylas.databinding.FragmentLoginBinding
 import com.mehmetbaloglu.firebasecalismasi_dsncepaylas.databinding.FragmentShareBinding
 
 
@@ -20,8 +20,8 @@ class ShareFragment : Fragment() {
     private var _binding: FragmentShareBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var auth : FirebaseAuth
-    private lateinit var db : FirebaseFirestore
+    private lateinit var auth: FirebaseAuth
+    private lateinit var db: FirebaseFirestore
     //private lateinit var storage: FirebaseStorage
 
 
@@ -43,6 +43,13 @@ class ShareFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.buttonShare.setOnClickListener {
+            shareText(
+                auth.currentUser?.email.toString(), binding.textUserMessage.text.toString()
+            )
+        }
+
     }
 
     override fun onDestroyView() {
@@ -52,23 +59,28 @@ class ShareFragment : Fragment() {
 
     //------------------------------------------------------------------------//
 
-    fun shareText(){
-        val userMail = auth.currentUser?.email.toString()
-        val userMessage = binding.textUserMessage.text.toString()
+    fun shareText(userMail: String, text: String) {
 
-        val postHashMap = hashMapOf<String,Any>()
+        val postHashMap = hashMapOf<String, Any>()
         postHashMap["userMail"] = userMail
-        postHashMap["userMessage"] = userMessage
+        postHashMap["userMessage"] = text
         postHashMap["postDate"] = Timestamp.now()
 
-        db.collection("Posts").add(postHashMap)
+        db.collection("Posts").add(postHashMap).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                Toast.makeText(requireContext(), "Post shared successfully", Toast.LENGTH_SHORT)
+                    .show()
+                goToFeedFragment()
+            }
+        }.addOnFailureListener { error ->
+            Toast.makeText(requireContext(),error.localizedMessage,Toast.LENGTH_SHORT).show()
+        }
 
     }
 
-
-
-
-
-
+    fun goToFeedFragment() {
+        val action = ShareFragmentDirections.actionShareFragmentToFeedFragment()
+        view?.let { Navigation.findNavController(it).navigate(action) }
+    }
 
 }
