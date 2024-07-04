@@ -13,6 +13,7 @@ import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.mehmetbaloglu.firebasecalismasi_dsncepaylas.data.model.Post
@@ -84,7 +85,7 @@ class FeedFragment : Fragment() {
     }
 
     fun getPosts() {
-        db.collection("Posts").addSnapshotListener { value, error ->
+        db.collection("Posts").orderBy("postDate", Query.Direction.DESCENDING).addSnapshotListener { value, error ->
             if (error != null) {
                 Toast.makeText(requireContext(), error.localizedMessage, Toast.LENGTH_SHORT).show()
             } else {

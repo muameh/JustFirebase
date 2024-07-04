@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="96dp"
         android:fontFamily="@font/abhaya_libre"
-        android:text="Share Your Massage"
+        android:text="Share Your Message"
         android:textSize="34sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

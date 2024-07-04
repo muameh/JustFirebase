@@ -48,6 +48,8 @@ class ShareFragment : Fragment() {
             shareText(
                 auth.currentUser?.email.toString(), binding.textUserMessage.text.toString()
             )
+
+            goToFeedFragment()
         }
 
     }
@@ -70,7 +72,8 @@ class ShareFragment : Fragment() {
             if (task.isSuccessful) {
                 Toast.makeText(requireContext(), "Post shared successfully", Toast.LENGTH_SHORT)
                     .show()
-                goToFeedFragment()
+                //goToFeedFragment()
+
             }
         }.addOnFailureListener { error ->
             Toast.makeText(requireContext(),error.localizedMessage,Toast.LENGTH_SHORT).show()
@@ -81,6 +84,7 @@ class ShareFragment : Fragment() {
     fun goToFeedFragment() {
         val action = ShareFragmentDirections.actionShareFragmentToFeedFragment()
         view?.let { Navigation.findNavController(it).navigate(action) }
+
     }
 
 }
