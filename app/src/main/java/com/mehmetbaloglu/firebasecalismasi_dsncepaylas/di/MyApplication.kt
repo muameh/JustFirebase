@@ -1,7 +1,6 @@
-package com.mehmetBaloglu.mymovieapp_v1.di
+package com.mehmetbaloglu.firebasecalismasi_dsncepaylas.di
 
 import android.app.Application
-import androidx.room.Room
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp

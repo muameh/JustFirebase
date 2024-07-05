@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.Timestamp
@@ -19,27 +20,30 @@ import com.google.firebase.ktx.Firebase
 import com.mehmetbaloglu.firebasecalismasi_dsncepaylas.data.model.Post
 import com.mehmetbaloglu.firebasecalismasi_dsncepaylas.databinding.FragmentFeedBinding
 import com.mehmetbaloglu.firebasecalismasi_dsncepaylas.ui.adapters.PostAdapter
+import com.mehmetbaloglu.firebasecalismasi_dsncepaylas.ui.viewmodel.PostsViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Locale
 
+@AndroidEntryPoint
 class FeedFragment : Fragment() {
     private var _binding: FragmentFeedBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var postViewModel: PostsViewModel
+
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
-    //private lateinit var storage: FirebaseStorage
 
     private lateinit var postAdapter: PostAdapter
 
-    var postList = ArrayList<Post>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val tempViewModel: PostsViewModel by viewModels()
+        postViewModel = tempViewModel
 
         auth = Firebase.auth
         db = Firebase.firestore
-        //storage = Firebase.storage
     }
 
     override fun onDestroyView() {
@@ -58,18 +62,47 @@ class FeedFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        getPosts()
-
         binding.floatingActionButton.setOnClickListener { goToShareFragment(it) }
 
-        setPostAdapter(postList)
+        postViewModel.getPosts()
+
+        setPostAdapter()
+
+        observeViewModel()
 
     }
 
-    fun setPostAdapter(postList: ArrayList<Post>) {
-        postAdapter = PostAdapter(postList)
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerView.adapter = postAdapter
+    //------------------------------------------------------------------------//
+
+
+
+    private fun observeViewModel() {
+        postViewModel.deleteMessage.observe(viewLifecycleOwner) { message ->
+            message?.let {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                postViewModel.deleteMessage.postValue(null)
+            }
+        }
+        postViewModel.postsMessage.observe(viewLifecycleOwner) { message ->
+            message?.let {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                postViewModel.deleteMessage.postValue(null)
+            }
+        }
+    }
+
+
+    fun setPostAdapter() {
+        postAdapter = PostAdapter(postViewModel)
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = postAdapter
+        }
+        postViewModel.postList.observe(viewLifecycleOwner){
+            postAdapter.differ.submitList(it)
+            Log.e("postList",it.toString())
+        }
+
     }
 
     fun formatTimestampToString(timestamp: Timestamp): String {
@@ -84,39 +117,5 @@ class FeedFragment : Fragment() {
         view.let { Navigation.findNavController(it).navigate(action) }
     }
 
-    fun getPosts() {
-        db.collection("Posts").orderBy("postDate", Query.Direction.DESCENDING).addSnapshotListener { value, error ->
-            if (error != null) {
-                Toast.makeText(requireContext(), error.localizedMessage, Toast.LENGTH_SHORT).show()
-            } else {
-                if (value != null) {
-                    if (!value.isEmpty) {
 
-
-                        val documents = value.documents
-
-                        postList.clear()
-
-                        for (document in documents) {
-                            val userMail = document.get("userMail") as String?
-                            val postMessage = document.get("userMessage") as String?
-                            val _postDate = document.get("postDate") as Timestamp?
-                            val postUrl = document.get("postUrl") as String?
-
-                           var postDate = formatTimestampToString(_postDate as Timestamp)
-
-                            var post = Post(userMail, postMessage, postUrl, postDate)
-
-                            Log.e( "value",post.toString())
-
-                            postList.add(post)
-
-                        }
-                        postAdapter?.notifyDataSetChanged()
-                    }
-                }
-            }
-
-        }
-    }
 }

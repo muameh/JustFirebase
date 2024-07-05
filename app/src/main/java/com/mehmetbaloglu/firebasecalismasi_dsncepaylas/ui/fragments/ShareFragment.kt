@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
@@ -13,24 +15,28 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.mehmetbaloglu.firebasecalismasi_dsncepaylas.data.model.Post
 import com.mehmetbaloglu.firebasecalismasi_dsncepaylas.databinding.FragmentShareBinding
+import com.mehmetbaloglu.firebasecalismasi_dsncepaylas.ui.viewmodel.PostsViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class ShareFragment : Fragment() {
     private var _binding: FragmentShareBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
-    //private lateinit var storage: FirebaseStorage
 
+    private lateinit var postViewModel: PostsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val tempViewModel: PostsViewModel by viewModels()
+        postViewModel = tempViewModel
 
         auth = Firebase.auth
         db = Firebase.firestore
-        //storage = Firebase.storage
     }
 
     override fun onCreateView(
@@ -45,10 +51,8 @@ class ShareFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.buttonShare.setOnClickListener {
-            shareText(
-                auth.currentUser?.email.toString(), binding.textUserMessage.text.toString()
-            )
-
+            createTPost(binding.textUserMessage.text.toString())
+            observeViewModel()
             goToFeedFragment()
         }
 
@@ -61,23 +65,24 @@ class ShareFragment : Fragment() {
 
     //------------------------------------------------------------------------//
 
-    fun shareText(userMail: String, text: String) {
-
-        val postHashMap = hashMapOf<String, Any>()
-        postHashMap["userMail"] = userMail
-        postHashMap["userMessage"] = text
-        postHashMap["postDate"] = Timestamp.now()
-
-        db.collection("Posts").add(postHashMap).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Toast.makeText(requireContext(), "Post shared successfully", Toast.LENGTH_SHORT)
-                    .show()
-                //goToFeedFragment()
-
+    private fun observeViewModel() {
+        postViewModel.sharePostMessage.observe(viewLifecycleOwner) { message ->
+            message?.let {
+                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+                postViewModel.sharePostMessage.postValue(null)
             }
-        }.addOnFailureListener { error ->
-            Toast.makeText(requireContext(),error.localizedMessage,Toast.LENGTH_SHORT).show()
         }
+    }
+
+    fun createTPost(text: String){
+        var postId: String? = ""
+        var userMail: String? = auth.currentUser?.email
+        var userMessage: String? = text
+        var postUrl: String? = ""
+        var postDate: Timestamp? = Timestamp.now()
+
+        val post = Post(postId, userMail, userMessage, postUrl, postDate)
+        postViewModel.sharePost(post)
 
     }
 
