@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.ShareFragment" >
+    tools:context=".ui.fragments.ShareFragment">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
+        app:boxStrokeColor="@color/black_board_green"
         app:layout_constraintEnd_toEndOf="@+id/textView"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView">
@@ -19,7 +20,7 @@
             android:id="@+id/textUserMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="text message" />
+            android:hint="text here" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
@@ -27,6 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
+        android:backgroundTint="@color/black_board_green"
         android:text="Share"
         app:layout_constraintEnd_toEndOf="@+id/textInputLayout"
         app:layout_constraintStart_toStartOf="@+id/textInputLayout"
@@ -39,8 +41,10 @@
         android:layout_marginTop="96dp"
         android:fontFamily="@font/abhaya_libre"
         android:text="Share Your Message"
+        android:textColor="@color/black_board_green"
         android:textSize="34sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

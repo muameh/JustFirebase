@@ -1,24 +1,41 @@
 package com.mehmetbaloglu.firebasecalismasi_dsncepaylas.ui.fragments
 
+import android.Manifest
+import android.app.Activity.RESULT_OK
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 import com.mehmetbaloglu.firebasecalismasi_dsncepaylas.data.model.Post
 import com.mehmetbaloglu.firebasecalismasi_dsncepaylas.databinding.FragmentShareBinding
 import com.mehmetbaloglu.firebasecalismasi_dsncepaylas.ui.viewmodel.PostsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.UUID
 
 @AndroidEntryPoint
 class ShareFragment : Fragment() {
@@ -27,8 +44,10 @@ class ShareFragment : Fragment() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
+    private lateinit var storage: FirebaseStorage
 
     private lateinit var postViewModel: PostsViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +56,10 @@ class ShareFragment : Fragment() {
 
         auth = Firebase.auth
         db = Firebase.firestore
+        storage = Firebase.storage
+
+
+
     }
 
     override fun onCreateView(
@@ -51,9 +74,11 @@ class ShareFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.buttonShare.setOnClickListener {
+
             createTPost(binding.textUserMessage.text.toString())
             observeViewModel()
             goToFeedFragment()
+
         }
 
     }
@@ -78,7 +103,7 @@ class ShareFragment : Fragment() {
         var postId: String? = ""
         var userMail: String? = auth.currentUser?.email
         var userMessage: String? = text
-        var postUrl: String? = ""
+        var postUrl: String? = "_imageUrl"
         var postDate: Timestamp? = Timestamp.now()
 
         val post = Post(postId, userMail, userMessage, postUrl, postDate)
@@ -91,5 +116,6 @@ class ShareFragment : Fragment() {
         view?.let { Navigation.findNavController(it).navigate(action) }
 
     }
+
 
 }

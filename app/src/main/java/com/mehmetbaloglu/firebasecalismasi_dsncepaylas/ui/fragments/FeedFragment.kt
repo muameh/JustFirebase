@@ -64,6 +64,10 @@ class FeedFragment : Fragment() {
 
         binding.floatingActionButton.setOnClickListener { goToShareFragment(it) }
 
+        binding.textView3.text = auth.currentUser?.email
+
+        binding.button2.setOnClickListener { signOut() }
+
         postViewModel.getPosts()
 
         setPostAdapter()
@@ -75,7 +79,11 @@ class FeedFragment : Fragment() {
     //------------------------------------------------------------------------//
 
 
-
+    fun signOut() {
+        auth.signOut()
+        val action = FeedFragmentDirections.actionFeedFragmentToLoginFragment()
+        view?.let { Navigation.findNavController(it).navigate(action) }
+    }
     private fun observeViewModel() {
         postViewModel.deleteMessage.observe(viewLifecycleOwner) { message ->
             message?.let {
@@ -104,13 +112,6 @@ class FeedFragment : Fragment() {
         }
 
     }
-
-    fun formatTimestampToString(timestamp: Timestamp): String {
-        val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault())
-        val date = timestamp.toDate()
-        return sdf.format(date)
-    }
-
 
     fun goToShareFragment(view: View) {
         val action = FeedFragmentDirections.actionFeedFragmentToShareFragment()
