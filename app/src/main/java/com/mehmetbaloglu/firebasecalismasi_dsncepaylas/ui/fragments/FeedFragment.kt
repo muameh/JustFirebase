@@ -10,20 +10,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.mehmetbaloglu.firebasecalismasi_dsncepaylas.data.model.Post
 import com.mehmetbaloglu.firebasecalismasi_dsncepaylas.databinding.FragmentFeedBinding
 import com.mehmetbaloglu.firebasecalismasi_dsncepaylas.ui.adapters.PostAdapter
 import com.mehmetbaloglu.firebasecalismasi_dsncepaylas.ui.viewmodel.PostsViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 @AndroidEntryPoint
 class FeedFragment : Fragment() {
@@ -84,6 +79,7 @@ class FeedFragment : Fragment() {
         val action = FeedFragmentDirections.actionFeedFragmentToLoginFragment()
         view?.let { Navigation.findNavController(it).navigate(action) }
     }
+
     private fun observeViewModel() {
         postViewModel.deleteMessage.observe(viewLifecycleOwner) { message ->
             message?.let {
@@ -106,9 +102,9 @@ class FeedFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = postAdapter
         }
-        postViewModel.postList.observe(viewLifecycleOwner){
+        postViewModel.postList.observe(viewLifecycleOwner) {
             postAdapter.differ.submitList(it)
-            Log.e("postList",it.toString())
+            Log.e("postList", it.toString())
         }
 
     }

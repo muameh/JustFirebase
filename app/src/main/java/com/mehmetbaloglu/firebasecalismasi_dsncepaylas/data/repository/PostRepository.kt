@@ -1,8 +1,5 @@
 package com.mehmetbaloglu.firebasecalismasi_dsncepaylas.data.repository
 
-import android.app.AlertDialog
-import android.content.Context
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -20,9 +17,9 @@ class PostRepository {
     var postList = MutableLiveData<List<Post>>()
 
 
-    var sharePostMessage : MutableLiveData<String?>
-    var deleteMessage : MutableLiveData<String?>
-    var getPostsMessage : MutableLiveData<String>
+    var sharePostMessage: MutableLiveData<String?>
+    var deleteMessage: MutableLiveData<String?>
+    var getPostsMessage: MutableLiveData<String>
 
     init {
         auth = Firebase.auth
@@ -34,13 +31,13 @@ class PostRepository {
     }
 
     fun deletePost(postId: String) {
-            db.collection("Posts").document(postId).delete().addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    deleteMessage.postValue("Post deleted successfully")
-                }
-            }.addOnFailureListener { error ->
-                deleteMessage.postValue(error.localizedMessage)
+        db.collection("Posts").document(postId).delete().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                deleteMessage.postValue("Post deleted successfully")
             }
+        }.addOnFailureListener { error ->
+            deleteMessage.postValue(error.localizedMessage)
+        }
 
     }
 

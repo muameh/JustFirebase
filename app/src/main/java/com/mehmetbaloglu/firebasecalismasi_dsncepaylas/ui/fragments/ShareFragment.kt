@@ -1,28 +1,13 @@
 package com.mehmetbaloglu.firebasecalismasi_dsncepaylas.ui.fragments
 
-import android.Manifest
-import android.app.Activity.RESULT_OK
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.ImageDecoder
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -35,7 +20,6 @@ import com.mehmetbaloglu.firebasecalismasi_dsncepaylas.data.model.Post
 import com.mehmetbaloglu.firebasecalismasi_dsncepaylas.databinding.FragmentShareBinding
 import com.mehmetbaloglu.firebasecalismasi_dsncepaylas.ui.viewmodel.PostsViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.UUID
 
 @AndroidEntryPoint
 class ShareFragment : Fragment() {
@@ -57,7 +41,6 @@ class ShareFragment : Fragment() {
         auth = Firebase.auth
         db = Firebase.firestore
         storage = Firebase.storage
-
 
 
     }
@@ -99,7 +82,7 @@ class ShareFragment : Fragment() {
         }
     }
 
-    fun createTPost(text: String){
+    fun createTPost(text: String) {
         var postId: String? = ""
         var userMail: String? = auth.currentUser?.email
         var userMessage: String? = text

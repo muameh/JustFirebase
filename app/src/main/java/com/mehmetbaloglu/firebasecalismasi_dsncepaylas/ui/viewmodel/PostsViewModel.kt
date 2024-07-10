@@ -1,6 +1,5 @@
 package com.mehmetbaloglu.firebasecalismasi_dsncepaylas.ui.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.mehmetbaloglu.firebasecalismasi_dsncepaylas.data.model.Post
@@ -9,14 +8,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class PostsViewModel  @Inject constructor(val postRepository: PostRepository) : ViewModel() {
+class PostsViewModel @Inject constructor(val postRepository: PostRepository) : ViewModel() {
 
     var postList = MutableLiveData<List<Post>>()
 
     val sharePostMessage = postRepository.sharePostMessage
     val deleteMessage = postRepository.deleteMessage
     val postsMessage = postRepository.getPostsMessage
-
 
 
     fun getPosts() {
@@ -30,10 +28,6 @@ class PostsViewModel  @Inject constructor(val postRepository: PostRepository) : 
     fun deletePost(postId: String) {
         postRepository.deletePost(postId)
     }
-
-
-
-
 
 
 }
